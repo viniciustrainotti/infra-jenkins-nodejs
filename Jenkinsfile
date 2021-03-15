@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    parameters { choice(name: 'CHOICES', choices: ['build_prod', 'build_dev'], description: ' Teste Checkout Git into Jenkins') }
+    parameters { choice(name: 'CHOICES', choices: ['serve', 'serverx'], description: 'Infra Jenkins Build Nodejs') }
     environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
@@ -13,7 +13,7 @@ pipeline {
         stage('Clone and Checkout') {
             steps {
                 git credentialsId: 'git_id',
-                url: 'http://git.franciscanos.net/moodle/frontend-ead-grade-dashboard.git',
+                url: 'http://git.franciscanos.net/moodle/service-ead-grade-dashboard.git',
                 branch: 'master'
 
                 sh "git checkout master"
@@ -24,14 +24,14 @@ pipeline {
         stage('Build'){
             steps{
                 script {
-                    if("$CHOICES".indexOf('build_prod') != -1){
+                    if("$CHOICES".indexOf('serve') != -1){
                         sh 'echo BUILD_PROD'
                         sh 'npm install'
-                        sh 'npm run build_prod'
+                        sh 'npm run serve'
                     }else{
                         sh 'echo BUILD_DEV'
                         sh 'npm install'
-                        sh 'npm run build_dev'
+                        sh 'npm run servex'
                     }
                 }
             }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     sh 'echo ZIP dist'
-                    sh 'zip dist.zip dist/*'
+                    sh 'zip dist.zip *'
                 }
             }
         }
