@@ -27,11 +27,11 @@ pipeline {
                     if("$CHOICES".indexOf('serve') != -1){
                         sh 'echo BUILD_PROD'
                         sh 'npm install'
-                        sh 'npm run serve'
+                        //sh 'npm run serve'
                     }else{
                         sh 'echo BUILD_DEV'
                         sh 'npm install'
-                        sh 'npm run servex'
+                        //sh 'npm run servex'
                     }
                 }
             }
